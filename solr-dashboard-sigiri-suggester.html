@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="1100">
+<title>Wize Commerce</title>
+<style>
+
+@import url(bootstrap.css);
+@import url(style.css);
+
+body {
+  padding-top: 10px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+</style>
+<body>
+<!--   <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        Frontend Graphite Metrics
+      </div>
+    </div> -->
+
+<script src="d3.v2.js"></script>
+<script src="cubism.v2.js"></script>
+<script>
+
+var context = cubism.context()
+    .serverDelay(10 * 1000) // allow 15 seconds of collection lag
+    .step(10000) // fifteen seconds per value
+    .size(1440); // fetch 1440 values (720p)
+
+var graphite = context.graphite("http://graphite2.pv.sv.nextag.com:8080");
+
+
+
+var matrics_sigiri = [
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri1.running.suggester.metric,0)))").alias("SV-SIGIRI-1"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri2.running.suggester.metric,0)))").alias("SV-SIGIRI-2"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri3.running.suggester.metric,0)))").alias("SV-SIGIRI-3"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri4.running.suggester.metric,0)))").alias("SV-SIGIRI-4"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri5.running.suggester.metric,0)))").alias("SV-SIGIRI-5"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri6.running.suggester.metric,0)))").alias("SV-SIGIRI-6"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri7.running.suggester.metric,0)))").alias("SV-SIGIRI-7"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri8.running.suggester.metric,0)))").alias("SV-SIGIRI-8"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri9.running.suggester.metric,0)))").alias("SV-SIGIRI-9"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri10.running.suggester.metric,0)))").alias("SV-SIGIRI-10"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sv-sigiri11.running.suggester.metric,0)))").alias("SV-SIGIRI-11"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri1.running.suggester.metric,0)))").alias("SD-SIGIRI-1"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri2.running.suggester.metric,0)))").alias("SD-SIGIRI-2"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri3.running.suggester.metric,0)))").alias("SD-SIGIRI-3"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri4.running.suggester.metric,0)))").alias("SD-SIGIRI-4"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri5.running.suggester.metric,0)))").alias("SD-SIGIRI-5"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri6.running.suggester.metric,0)))").alias("SD-SIGIRI-6"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri7.running.suggester.metric,0)))").alias("SD-SIGIRI-7"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri8.running.suggester.metric,0)))").alias("SD-SIGIRI-8"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri9.running.suggester.metric,0)))").alias("SD-SIGIRI-9"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri10.running.suggester.metric,0)))").alias("SD-SIGIRI-10"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.sd-sigiri11.running.suggester.metric,0)))").alias("SD-SIGIRI-11"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri1.running.suggester.metric,0)))").alias("AT-SIGIRI-1"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri2.running.suggester.metric,0)))").alias("AT-SIGIRI-2"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri3.running.suggester.metric,0)))").alias("AT-SIGIRI-3"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri4.running.suggester.metric,0)))").alias("AT-SIGIRI-4"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri5.running.suggester.metric,0)))").alias("AT-SIGIRI-5"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri6.running.suggester.metric,0)))").alias("AT-SIGIRI-6"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri7.running.suggester.metric,0)))").alias("AT-SIGIRI-7"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri8.running.suggester.metric,0)))").alias("AT-SIGIRI-8"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri9.running.suggester.metric,0)))").alias("AT-SIGIRI-9"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri10.running.suggester.metric,0)))").alias("AT-SIGIRI-10"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.at-sigiri11.running.suggester.metric,0)))").alias("AT-SIGIRI-11"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.ie-sigiri1.running.suggester.metric,0)))").alias("IE-SIGIRI-1"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.ie-sigiri2.running.suggester.metric,0)))").alias("IE-SIGIRI-2"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.ie-sigiri3.running.suggester.metric,0)))").alias("IE-SIGIRI-3"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.ie-sigiri4.running.suggester.metric,0)))").alias("IE-SIGIRI-4"),
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.ie-sigiri5.running.suggester.metric,0)))").alias("IE-SIGIRI-5"),   
+graphite.metric("sumSeries(group(transformNull(stats.timers.services.ie-sigiri6.running.suggester.metric,0)))").alias("IE-SIGIRI-6"),       
+];
+
+var horizon = context.horizon().colors(["#08519c", "#*82bd", "#6baed6","#FFCC00","#FF9900","#FF0000" ]);
+
+d3.select("body").selectAll(".axis")
+    .data(["top", "bottom"])
+  .enter().append("div").attr("class", "fluid-row")
+    .attr("class", function(d) { return d + " axis"; })
+    .each(function(d) { d3.select(this).call(context.axis().ticks(12).orient(d)); });
+
+d3.select("body").append("div")
+    .attr("class", "rule")
+    .call(context.rule());
+
+d3.select("body").selectAll(".horizon")
+    .data(matrics_sigiri)
+  .enter().insert("div", ".bottom")
+    .attr("class", "horizon").call(horizon.extent([-1, 2]).height(20));
+
+context.on("focus", function(i) {
+  d3.selectAll(".value").style("right", i == null ? null : context.size() - i + "px");
+});
+
+</script>
